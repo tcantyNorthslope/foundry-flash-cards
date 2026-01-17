@@ -1,0 +1,10 @@
+{
+  "foundryUrl": "https://northslope.palantirfoundry.com",
+  "widgetSet": {
+    "rid": "ri.widgetregistry..widget-set.91545aba-9df8-4d90-8e00-de3b95518038",
+    "directory": "./dist",
+    "autoVersion": {
+      "type": "package-json"
+    }
+  }
+}
