@@ -5,29 +5,10 @@ import { defineConfig } from "@osdk/widget.client";
 // widget set to start developing against configuration changes.
 
 export default defineConfig({
-  id: "widgetId",
-  name: "Custom Widget",
-  description: "An example custom widget implementation",
+  id: "flashCardsWidget",
+  name: "Foundry Flash Cards",
+  description: "Interactive flash cards to learn about Palantir's Foundry platform",
   type: "workshop",
-  parameters: {
-    headerText: {
-      displayName: "Widget title",
-      type: "string",
-    },
-    todoItems: {
-      displayName: "Todo items",
-      type: "array",
-      subType: "string",
-    },
-  },
-  events: {
-    updateHeader: {
-      displayName: "Update header",
-      parameterUpdateIds: ["headerText"],
-    },
-    updateTodoItems: {
-      displayName: "Update todo items",
-      parameterUpdateIds: ["todoItems"],
-    },
-  },
+  parameters: {},
+  events: {},
 });

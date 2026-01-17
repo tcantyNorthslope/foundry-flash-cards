@@ -1,0 +1,754 @@
+{
+  "questions": [
+    {
+      "id": 1,
+      "category": "Platform Overview",
+      "difficulty": "beginner",
+      "question": "What are the three main components that make up the Palantir platform?",
+      "options": [
+        "AIP, Foundry, and Apollo",
+        "Workshop, Pipeline Builder, and Ontology",
+        "Data, Logic, and Actions",
+        "Objects, Links, and Functions"
+      ],
+      "correct_answer": 0,
+      "explanation": "The Palantir platform consists of three core components that work together as an 'AI Mesh': AIP (Artificial Intelligence Platform) connects generative AI to operations, Foundry is the data operations platform, and Apollo serves as mission control for autonomous software deployment.",
+      "url": "https://www.palantir.com/docs/foundry/platform-overview/overview"
+    },
+    {
+      "id": 2,
+      "category": "Ontology",
+      "difficulty": "beginner",
+      "question": "What is the Palantir Ontology primarily designed to represent?",
+      "options": [
+        "Just the data in an enterprise",
+        "The decisions in an enterprise",
+        "The organizational hierarchy",
+        "The software architecture"
+      ],
+      "correct_answer": 1,
+      "explanation": "The Ontology is designed to represent the decisions in an enterprise, not simply the data. It helps organizations execute the best possible decisions in real-time by modeling the complexity of decision processes and facilitating deep interoperability with existing enterprise systems.",
+      "url": "https://www.palantir.com/docs/foundry/ontology/overview"
+    },
+    {
+      "id": 3,
+      "category": "Ontology",
+      "difficulty": "intermediate",
+      "question": "What are the three decision components that every decision can be broken down into in the Palantir platform?",
+      "options": [
+        "Input, Processing, Output",
+        "Data, Logic, Actions",
+        "Objects, Properties, Links",
+        "Models, Functions, Workflows"
+      ],
+      "correct_answer": 1,
+      "explanation": "Every decision in the Palantir platform breaks down into three components: Data (relevant facts and context), Logic (organizational rules, probabilities, and model inputs), and Actions (the kinetic effects or outcomes of the decision in the real world).",
+      "url": "https://www.palantir.com/docs/foundry/platform-overview/overview"
+    },
+    {
+      "id": 4,
+      "category": "Ontology",
+      "difficulty": "beginner",
+      "question": "What does an object type define in the Foundry Ontology?",
+      "options": [
+        "A database table schema",
+        "A real-world entity or event",
+        "A data transformation rule",
+        "A security permission"
+      ],
+      "correct_answer": 1,
+      "explanation": "An object type in the Foundry Ontology defines a real-world entity or event, such as a person, product, or transaction. Object types make the Ontology represent actual business concepts rather than just database structures, enabling both humans and AI to understand operational complexity.",
+      "url": "https://www.palantir.com/docs/foundry/ontology/core-concepts"
+    },
+    {
+      "id": 5,
+      "category": "Ontology",
+      "difficulty": "intermediate",
+      "question": "What is a link type in the Foundry Ontology?",
+      "options": [
+        "A hyperlink to external resources",
+        "A relationship between two object types",
+        "A connection to external databases",
+        "A data pipeline connection"
+      ],
+      "correct_answer": 1,
+      "explanation": "A link type defines a relationship between two object types in the Ontology. For example, an 'Employee' object type might have a 'works at' link type connecting to a 'Company' object type. These relationships help model real-world connections and enable navigation through the Ontology.",
+      "url": "https://www.palantir.com/docs/foundry/ontology/core-concepts"
+    },
+    {
+      "id": 6,
+      "category": "Pipeline Builder",
+      "difficulty": "beginner",
+      "question": "What is Pipeline Builder primarily used for in Foundry?",
+      "options": [
+        "Building user interfaces",
+        "Data integration and transformation",
+        "Creating security policies",
+        "Managing user permissions"
+      ],
+      "correct_answer": 1,
+      "explanation": "Pipeline Builder is Foundry's primary tool for data integration and transformation. It provides a point-and-click interface for creating data pipelines that can ingest, clean, transform, and integrate data from various sources into the platform.",
+      "url": "https://www.palantir.com/docs/foundry/pipeline-builder/overview"
+    },
+    {
+      "id": 7,
+      "category": "Pipeline Builder",
+      "difficulty": "intermediate",
+      "question": "What are the three main types of pipelines you can create in Foundry?",
+      "options": [
+        "Fast, Medium, and Slow pipelines",
+        "Batch, Incremental, and Streaming pipelines",
+        "Python, Java, and SQL pipelines",
+        "Simple, Complex, and Advanced pipelines"
+      ],
+      "correct_answer": 1,
+      "explanation": "Foundry supports three pipeline types: Batch pipelines process all data from scratch each run, Incremental pipelines only process new or changed data since the last run (more efficient), and Streaming pipelines process data in real-time as it arrives.",
+      "url": "https://www.palantir.com/docs/foundry/building-pipelines/pipeline-types"
+    },
+    {
+      "id": 8,
+      "category": "Pipeline Builder",
+      "difficulty": "advanced",
+      "question": "What is the primary advantage of incremental pipelines over batch pipelines?",
+      "options": [
+        "They are easier to write and maintain",
+        "They support more programming languages",
+        "They only process new data that has changed since the last run",
+        "They provide better error handling"
+      ],
+      "correct_answer": 2,
+      "explanation": "Incremental pipelines are more efficient than batch pipelines because they only process new or modified data since the last successful run, rather than reprocessing all data from scratch. This significantly reduces computation time and resources for large datasets that change incrementally.",
+      "url": "https://www.palantir.com/docs/foundry/building-pipelines/pipeline-types"
+    },
+    {
+      "id": 9,
+      "category": "Pipeline Builder",
+      "difficulty": "intermediate",
+      "question": "What type of outputs can Pipeline Builder produce?",
+      "options": [
+        "Only datasets",
+        "Datasets, virtual tables, and Ontology components",
+        "Only object types and link types",
+        "Only media sets and time series"
+      ],
+      "correct_answer": 1,
+      "explanation": "Pipeline Builder is versatile and can produce multiple output types including datasets (collections of files), virtual tables (zero-copy access to external data), and Ontology components (objects and links). This flexibility allows pipelines to serve different use cases across the platform.",
+      "url": "https://www.palantir.com/docs/foundry/pipeline-builder/outputs-overview"
+    },
+    {
+      "id": 10,
+      "category": "Pipeline Builder",
+      "difficulty": "beginner",
+      "question": "In Pipeline Builder, what is the difference between expressions and transforms?",
+      "options": [
+        "Expressions work on entire tables, transforms work on columns",
+        "Expressions take columns as input and output a single column, transforms take entire tables",
+        "Expressions are for Python, transforms are for SQL",
+        "There is no difference, they are the same"
+      ],
+      "correct_answer": 1,
+      "explanation": "Expressions operate at the column level - they take one or more columns as input and produce a single output column. Transforms operate at the table level - they take entire tables as input and can produce modified or new tables. This distinction helps organize different types of data manipulation.",
+      "url": "https://www.palantir.com/docs/foundry/pipeline-builder/transforms-overview"
+    },
+    {
+      "id": 11,
+      "category": "Workshop",
+      "difficulty": "beginner",
+      "question": "What is Workshop primarily used for in Foundry?",
+      "options": [
+        "Data transformation and ETL",
+        "Creating interactive applications for operational users",
+        "Writing Python code",
+        "Database administration"
+      ],
+      "correct_answer": 1,
+      "explanation": "Workshop is Foundry's low-code/no-code application builder designed to create interactive operational applications. It enables users to build applications that combine data visualization, user actions, and business logic without extensive coding, making it accessible to non-developers.",
+      "url": "https://www.palantir.com/docs/foundry/workshop/overview"
+    },
+    {
+      "id": 12,
+      "category": "Workshop",
+      "difficulty": "intermediate",
+      "question": "What is the primary building block that Workshop uses to reduce the barrier to entry for application builders?",
+      "options": [
+        "The Dataset layer",
+        "The Code Repository",
+        "The Object layer",
+        "The SQL interface"
+      ],
+      "correct_answer": 2,
+      "explanation": "Workshop leverages the Object layer (Ontology) as its primary building block. By working with semantically meaningful objects rather than raw datasets or code, Workshop makes it easier for non-technical users to build applications that operate on business concepts they understand.",
+      "url": "https://www.palantir.com/docs/foundry/workshop/overview"
+    },
+    {
+      "id": 13,
+      "category": "Workshop",
+      "difficulty": "intermediate",
+      "question": "What are the main layout components of a Workshop module?",
+      "options": [
+        "Tables, Charts, and Maps",
+        "Header, Pages, Sections, and Overlays",
+        "Widgets, Buttons, and Forms",
+        "Data, Logic, and Actions"
+      ],
+      "correct_answer": 1,
+      "explanation": "Workshop modules are structured with four main layout components: Header (top navigation area), Pages (main navigable views), Sections (subdivisions within pages), and Overlays (modal dialogs or pop-ups). This structure provides a consistent framework for organizing application content.",
+      "url": "https://www.palantir.com/docs/foundry/workshop/concepts-layouts"
+    },
+    {
+      "id": 14,
+      "category": "Workshop",
+      "difficulty": "beginner",
+      "question": "What does Workshop leverage for writeback to object data?",
+      "options": [
+        "SQL queries",
+        "Actions",
+        "Python scripts",
+        "Data pipelines"
+      ],
+      "correct_answer": 1,
+      "explanation": "Workshop uses Actions to write data back to the Ontology. Actions are the mechanism in Foundry for modifying or creating objects and links, providing controlled, permissioned ways for users to make changes through the application interface.",
+      "url": "https://www.palantir.com/docs/foundry/workshop/overview"
+    },
+    {
+      "id": 15,
+      "category": "Workshop",
+      "difficulty": "advanced",
+      "question": "What is a common application pattern supported by Workshop for enabling operational users to triage and complete tasks?",
+      "options": [
+        "Dashboards",
+        "Inboxes",
+        "Reports",
+        "Spreadsheets"
+      ],
+      "correct_answer": 1,
+      "explanation": "Inboxes are a common Workshop pattern that presents users with a list of tasks or items requiring attention. Users can triage, prioritize, and take actions on these items, making it ideal for operational workflows like approvals, issue resolution, or case management.",
+      "url": "https://www.palantir.com/docs/foundry/workshop/overview"
+    },
+    {
+      "id": 16,
+      "category": "AIP",
+      "difficulty": "beginner",
+      "question": "What does AIP stand for in the Palantir platform?",
+      "options": [
+        "Advanced Integration Platform",
+        "Automated Intelligence Processing",
+        "Artificial Intelligence Platform",
+        "Analytical Insight Platform"
+      ],
+      "correct_answer": 2,
+      "explanation": "AIP stands for Artificial Intelligence Platform. It is Palantir's platform for connecting generative AI to operations, enabling real-time AI-driven decision-making in critical commercial and government contexts while ensuring safety, security, and effectiveness.",
+      "url": "https://www.palantir.com/docs/foundry/aip/overview"
+    },
+    {
+      "id": 17,
+      "category": "AIP",
+      "difficulty": "intermediate",
+      "question": "What is AIP Assist?",
+      "options": [
+        "A code compilation tool",
+        "An LLM-powered support tool to help users navigate and understand the platform",
+        "A data visualization library",
+        "A database query optimizer"
+      ],
+      "correct_answer": 1,
+      "explanation": "AIP Assist is an LLM-powered assistant integrated throughout the Foundry platform that helps users navigate, understand features, and accelerate their work. It has access to Palantir documentation and is deeply integrated into the platform frontend to suggest next actions and relevant tutorials.",
+      "url": "https://www.palantir.com/docs/foundry/assist/overview"
+    },
+    {
+      "id": 18,
+      "category": "AIP",
+      "difficulty": "intermediate",
+      "question": "What is AIP Logic?",
+      "options": [
+        "A programming language for AI",
+        "A database query language",
+        "A no-code development environment for building functions powered by LLMs",
+        "A data transformation framework"
+      ],
+      "correct_answer": 2,
+      "explanation": "AIP Logic is a no-code development environment that allows users to build functions powered by large language models (LLMs). It enables the creation of AI-powered workflows without writing code, making AI capabilities accessible to non-technical users for building custom agents and automations.",
+      "url": "https://www.palantir.com/docs/foundry/logic/overview"
+    },
+    {
+      "id": 19,
+      "category": "AIP",
+      "difficulty": "advanced",
+      "question": "What can AIP Logic functions take as inputs?",
+      "options": [
+        "Only text strings",
+        "Only database tables",
+        "Ontology objects, object sets, or text strings",
+        "Only numerical data"
+      ],
+      "correct_answer": 2,
+      "explanation": "AIP Logic functions are flexible and can accept various input types including Ontology objects (individual entities), object sets (collections of entities), or text strings. This versatility allows AIP Logic to operate on both structured Ontology data and unstructured text, enabling diverse AI-powered workflows.",
+      "url": "https://www.palantir.com/docs/foundry/logic/overview"
+    },
+    {
+      "id": 20,
+      "category": "AIP",
+      "difficulty": "intermediate",
+      "question": "What are AIP Agents?",
+      "options": [
+        "Automated data collection robots",
+        "Interactive LLM-powered assistants equipped with enterprise-specific information",
+        "Security monitoring tools",
+        "Data pipeline schedulers"
+      ],
+      "correct_answer": 1,
+      "explanation": "AIP Agents are interactive assistants powered by large language models that have access to enterprise-specific information, tools, and context. They can help users with tasks ranging from data analysis to workflow automation, leveraging both the Ontology and enterprise data to provide informed assistance.",
+      "url": "https://www.palantir.com/docs/foundry/assist/agents-in-aip-assist"
+    },
+    {
+      "id": 21,
+      "category": "Data Integration",
+      "difficulty": "beginner",
+      "question": "What is a dataset in Foundry?",
+      "options": [
+        "A SQL database table",
+        "A wrapper around a collection of files stored in a backing file system",
+        "A Python dataframe",
+        "An Excel spreadsheet"
+      ],
+      "correct_answer": 1,
+      "explanation": "In Foundry, a dataset is a wrapper around a collection of files stored in a backing file system. Datasets can contain various file formats (CSV, Parquet, JSON, etc.) and provide a consistent interface for accessing and versioning data, with metadata tracking lineage and transformations.",
+      "url": "https://www.palantir.com/docs/foundry/pipeline-builder/core-concepts"
+    },
+    {
+      "id": 22,
+      "category": "Data Integration",
+      "difficulty": "intermediate",
+      "question": "What execution engines does Pipeline Builder support?",
+      "options": [
+        "Only Apache Spark",
+        "Spark, Flink, Azure instances, and more",
+        "Only Python interpreters",
+        "Only SQL databases"
+      ],
+      "correct_answer": 1,
+      "explanation": "Pipeline Builder supports multiple execution engines including Apache Spark for distributed batch processing, Apache Flink for streaming, and various cloud-specific instances like Azure. This multi-engine support provides flexibility to choose the best execution environment for different workloads and data processing patterns.",
+      "url": "https://www.palantir.com/docs/foundry/pipeline-builder/overview"
+    },
+    {
+      "id": 23,
+      "category": "Data Integration",
+      "difficulty": "advanced",
+      "question": "What is the purpose of the 'Use LLM' node in Pipeline Builder?",
+      "options": [
+        "To optimize database queries",
+        "To execute large language models on data at scale",
+        "To create machine learning models",
+        "To validate data quality"
+      ],
+      "correct_answer": 1,
+      "explanation": "The 'Use LLM' node in Pipeline Builder allows you to apply large language models to your data at scale within pipelines. This enables LLM-powered transformations like classification, sentiment analysis, summarization, entity extraction, or translation directly in your data processing workflows, creating proposals that can be reviewed and approved.",
+      "url": "https://www.palantir.com/docs/foundry/aip/aip-features"
+    },
+    {
+      "id": 24,
+      "category": "Actions",
+      "difficulty": "beginner",
+      "question": "What do Actions represent in the Foundry Ontology?",
+      "options": [
+        "Data queries",
+        "The 'verbs' of the enterprise - the things that are done",
+        "Security permissions",
+        "Data transformations"
+      ],
+      "correct_answer": 1,
+      "explanation": "Actions represent the 'verbs' of the enterprise - they define what can be done or changed in the system. Actions control how users or AI agents can modify the Ontology data model or interact with external systems, ensuring that decisions propagate into the real world with proper permissions and auditability.",
+      "url": "https://www.palantir.com/docs/foundry/platform-overview/overview"
+    },
+    {
+      "id": 25,
+      "category": "Actions",
+      "difficulty": "intermediate",
+      "question": "What pattern do AI agents typically follow when making changes in the Palantir platform?",
+      "options": [
+        "They make direct changes without oversight",
+        "They create proposals for human review and approval",
+        "They only read data, never write",
+        "They require manual coding for each change"
+      ],
+      "correct_answer": 1,
+      "explanation": "AI agents typically create proposals for human review rather than making direct changes. This proposal-based pattern reinforces the 'human in the loop' paradigm, ensures safe AI operations, and generates valuable metadata for the agent to learn from continuous feedback, creating a positive learning cycle.",
+      "url": "https://www.palantir.com/docs/foundry/platform-overview/overview"
+    },
+    {
+      "id": 26,
+      "category": "Functions",
+      "difficulty": "intermediate",
+      "question": "What is a Function in the Foundry platform?",
+      "options": [
+        "A database stored procedure",
+        "A piece of code-based logic that takes input parameters and returns an output",
+        "A data visualization",
+        "A security role"
+      ],
+      "correct_answer": 1,
+      "explanation": "A Function in Foundry is a piece of code-based logic (typically written in Python or TypeScript) that takes input parameters and returns an output. Functions can be integrated into the Ontology, used in pipelines, called from applications, or wrapped around models to provide reusable business logic throughout the platform.",
+      "url": "https://www.palantir.com/docs/foundry/ontology/core-concepts"
+    },
+    {
+      "id": 27,
+      "category": "Functions",
+      "difficulty": "advanced",
+      "question": "What SDK library should you use to interact with Foundry APIs through functions in Python?",
+      "options": [
+        "pandas-foundry",
+        "foundry-platform-sdk",
+        "palantir-sdk",
+        "foundry-api"
+      ],
+      "correct_answer": 1,
+      "explanation": "The foundry-platform-sdk is the official Python library for interacting with Foundry APIs through functions. It provides programmatic access to platform resources, allowing you to read and write data, interact with the Ontology, and leverage platform capabilities from within your Python code.",
+      "url": "https://www.palantir.com/docs/foundry/functions/platform-sdk"
+    },
+    {
+      "id": 28,
+      "category": "Security",
+      "difficulty": "beginner",
+      "question": "What is the central permissioning model in the Ontology?",
+      "options": [
+        "Access Control Lists (ACLs)",
+        "User Groups",
+        "Roles",
+        "Permissions Flags"
+      ],
+      "correct_answer": 2,
+      "explanation": "Roles are the central permissioning model in the Ontology. Roles define what users can see and do with objects, properties, links, and actions. This role-based access control provides granular, consistent security across the platform and can blend with marking-based and purpose-driven paradigms.",
+      "url": "https://www.palantir.com/docs/foundry/ontology/core-concepts"
+    },
+    {
+      "id": 29,
+      "category": "Security",
+      "difficulty": "intermediate",
+      "question": "How is data encrypted in the Palantir platform?",
+      "options": [
+        "Only at rest",
+        "Only in transit",
+        "Both in transit and at rest",
+        "Data is not encrypted"
+      ],
+      "correct_answer": 2,
+      "explanation": "The Palantir platform encrypts all data both in transit (during transmission between systems) and at rest (when stored). This comprehensive encryption approach is part of Foundry's best-in-class security model that ensures data protection throughout its entire lifecycle in the platform.",
+      "url": "https://www.palantir.com/docs/foundry/platform-overview/overview"
+    },
+    {
+      "id": 30,
+      "category": "Models",
+      "difficulty": "intermediate",
+      "question": "What is a modeling objective in Foundry?",
+      "options": [
+        "A business goal for the project",
+        "The full lifecycle of a model captured in the platform",
+        "A performance metric for models",
+        "A training dataset"
+      ],
+      "correct_answer": 1,
+      "explanation": "A modeling objective in Foundry captures the full lifecycle of a model within the platform. It encompasses everything from training data and model development through deployment and monitoring, providing a structured way to manage models from conception to production use.",
+      "url": "https://www.palantir.com/docs/foundry/platform-overview/overview"
+    },
+    {
+      "id": 31,
+      "category": "Models",
+      "difficulty": "advanced",
+      "question": "What service provides a unified interface for multi-modal interactivity with LLMs in Foundry?",
+      "options": [
+        "Model Service",
+        "Language Model Service",
+        "AI Gateway",
+        "LLM Connector"
+      ],
+      "correct_answer": 1,
+      "explanation": "The Language Model Service provides a unified interface for multi-modal interactivity with large language models while abstracting the specific model and provider implementation details. This makes it simple to develop across the landscape of commercially-available LLMs without being tied to a specific vendor or model.",
+      "url": "https://www.palantir.com/docs/foundry/platform-overview/overview"
+    },
+    {
+      "id": 32,
+      "category": "DevOps",
+      "difficulty": "intermediate",
+      "question": "What is Foundry Branching used for?",
+      "options": [
+        "Creating organizational hierarchies",
+        "Developing and testing comprehensive end-to-end workflows in isolation",
+        "Splitting data into multiple datasets",
+        "Creating multiple user interfaces"
+      ],
+      "correct_answer": 1,
+      "explanation": "Foundry Branching allows developers to create isolated development environments where they can build and test comprehensive end-to-end workflows without affecting production systems. This enables safe experimentation and development with the ability to merge changes back to the main branch when ready.",
+      "url": "https://www.palantir.com/docs/foundry/foundry-branching/overview"
+    },
+    {
+      "id": 33,
+      "category": "DevOps",
+      "difficulty": "beginner",
+      "question": "What is Apollo in the Palantir platform?",
+      "options": [
+        "A data visualization tool",
+        "Mission control for autonomous software deployment",
+        "A machine learning framework",
+        "A database management system"
+      ],
+      "correct_answer": 1,
+      "explanation": "Apollo is Palantir's mission control for autonomous software deployment. It serves as the Software Delivery Layer in the AI Mesh architecture, managing the deployment, updates, and operations of Palantir software across various environments, enabling continuous delivery and platform updates.",
+      "url": "https://www.palantir.com/docs/foundry/platform-overview/overview"
+    },
+    {
+      "id": 34,
+      "category": "DevOps",
+      "difficulty": "intermediate",
+      "question": "What is Marketplace in Foundry?",
+      "options": [
+        "An e-commerce platform",
+        "A storefront for product discovery and installation of data products",
+        "A dataset exchange",
+        "A model repository"
+      ],
+      "correct_answer": 1,
+      "explanation": "Marketplace is Foundry's internal storefront for discovering and installing data products. It allows teams to package collections of platform resources (pipelines, Ontologies, applications, models, etc.) and share them with other users or teams, promoting reusability and standardization across the organization.",
+      "url": "https://www.palantir.com/docs/foundry/platform-overview/overview"
+    },
+    {
+      "id": 35,
+      "category": "Analytics",
+      "difficulty": "beginner",
+      "question": "What is Contour in the Foundry platform?",
+      "options": [
+        "A data pipeline tool",
+        "A data analysis and visualization tool",
+        "A security framework",
+        "A deployment system"
+      ],
+      "correct_answer": 1,
+      "explanation": "Contour is Foundry's point-and-click data analysis and visualization tool. It enables users to explore data, create visualizations, and build analytical workflows without writing code, making data analysis accessible to non-technical users while supporting sophisticated analytical capabilities.",
+      "url": "https://www.palantir.com/docs/foundry/platform-overview/overview"
+    },
+    {
+      "id": 36,
+      "category": "Analytics",
+      "difficulty": "intermediate",
+      "question": "What is Quiver used for in Foundry?",
+      "options": [
+        "Data encryption",
+        "Multimodal charting and analysis",
+        "User authentication",
+        "Code compilation"
+      ],
+      "correct_answer": 1,
+      "explanation": "Quiver is Foundry's tool for multimodal charting and analysis. It provides sophisticated visualization capabilities across different data modalities, allowing users to create interactive charts, dashboards, and analytical displays that can be embedded in applications or used for standalone analysis.",
+      "url": "https://www.palantir.com/docs/foundry/platform-overview/overview"
+    },
+    {
+      "id": 37,
+      "category": "Object Storage",
+      "difficulty": "advanced",
+      "question": "What is the name of Foundry's next-generation canonical data store for backing the Ontology?",
+      "options": [
+        "Object Storage V1 (Phonograph)",
+        "Object Storage V2",
+        "Object Database Pro",
+        "Ontology Store"
+      ],
+      "correct_answer": 1,
+      "explanation": "Object Storage V2 is Foundry's next-generation canonical data store for backing the Ontology. It provides improved performance, scalability, and functionality compared to Object Storage V1 (Phonograph), supporting larger datasets and more complex operations on Ontology objects.",
+      "url": "https://www.palantir.com/docs/foundry/object-backend/overview"
+    },
+    {
+      "id": 38,
+      "category": "Object Storage",
+      "difficulty": "advanced",
+      "question": "What is the maximum number of objects that can be edited in a single Action with Object Storage V2?",
+      "options": [
+        "1,000 objects",
+        "5,000 objects",
+        "10,000 objects",
+        "Unlimited objects"
+      ],
+      "correct_answer": 2,
+      "explanation": "Object Storage V2 allows editing up to 10,000 objects in a single Action, a significant improvement over V1's limits. This increased capacity enables more complex bulk operations and supports larger-scale workflows while maintaining performance and data integrity.",
+      "url": "https://www.palantir.com/docs/foundry/object-backend/overview"
+    },
+    {
+      "id": 39,
+      "category": "Scenarios",
+      "difficulty": "intermediate",
+      "question": "What is a Scenario in the Foundry platform?",
+      "options": [
+        "A test case for pipelines",
+        "A primitive that allows projecting consequences of changes by creating a branch of the ontology",
+        "A user workflow template",
+        "A data validation rule"
+      ],
+      "correct_answer": 1,
+      "explanation": "A Scenario is a primitive that allows users to project the consequences of potential changes by creating a sandbox branch of the Ontology. This enables 'What if...' analysis where forecasts, business process models, and other analyses can be run on proposed changes without affecting the actual production data.",
+      "url": "https://www.palantir.com/docs/foundry/platform-overview/overview"
+    },
+    {
+      "id": 40,
+      "category": "Scenarios",
+      "difficulty": "advanced",
+      "question": "What application specializes in process visualization and scenario testing?",
+      "options": [
+        "Workshop",
+        "Pipeline Builder",
+        "Vertex",
+        "Contour"
+      ],
+      "correct_answer": 2,
+      "explanation": "Vertex specializes in process visualization and scenario testing. It allows users to visualize complex system graphs, business processes, and supply chains, then test scenarios by making hypothetical changes and observing their cascading effects throughout the system before committing to actual changes.",
+      "url": "https://www.palantir.com/docs/foundry/platform-overview/overview"
+    },
+    {
+      "id": 41,
+      "category": "Automation",
+      "difficulty": "intermediate",
+      "question": "What is the Automate application used for?",
+      "options": [
+        "Automating code deployment",
+        "Setting up and executing business automation with conditions and effects",
+        "Automating data backups",
+        "Scheduling user meetings"
+      ],
+      "correct_answer": 1,
+      "explanation": "Automate is used for setting up and executing business automation workflows. It allows users to define conditions (triggers) and effects (actions) that execute automatically when certain criteria are met, enabling event-driven workflows and reducing manual operational tasks.",
+      "url": "https://www.palantir.com/docs/foundry/app-building/overview"
+    },
+    {
+      "id": 42,
+      "category": "Ontology SDK",
+      "difficulty": "advanced",
+      "question": "What is the main difference between the Foundry Platform SDK and the Ontology SDK (OSDK)?",
+      "options": [
+        "The Platform SDK is for Python, OSDK is for Java",
+        "The Platform SDK interacts with Ontological resources like object types, while OSDK allows interaction with objects, links, and Actions",
+        "They are the same SDK with different names",
+        "The OSDK is deprecated"
+      ],
+      "correct_answer": 1,
+      "explanation": "The Platform SDK focuses on interacting with Ontological resources (object types, link types, action types) and platform resources, while the OSDK (Ontology SDK) allows direct interaction with the actual objects, links, and execution of Actions. The OSDK is used for building applications that need to read and modify Ontology data.",
+      "url": "https://github.com/palantir/foundry-platform-python"
+    },
+    {
+      "id": 43,
+      "category": "Data Expectations",
+      "difficulty": "intermediate",
+      "question": "What types of data expectations does Pipeline Builder currently support?",
+      "options": [
+        "Schema validation and data type checks",
+        "Primary key and row count",
+        "Foreign key and null checks",
+        "Range validation and pattern matching"
+      ],
+      "correct_answer": 1,
+      "explanation": "Pipeline Builder supports data expectations including primary key validation (ensuring uniqueness) and row count expectations (checking for expected data volumes). These expectations help ensure data quality and can trigger alerts when pipelines produce data that doesn't meet specified criteria.",
+      "url": "https://www.palantir.com/docs/foundry/pipeline-builder/core-concepts"
+    },
+    {
+      "id": 44,
+      "category": "Media Sets",
+      "difficulty": "intermediate",
+      "question": "What is a media set in Foundry?",
+      "options": [
+        "A video streaming service",
+        "A collection of media files with a common schema",
+        "A social media integration",
+        "A marketing campaign"
+      ],
+      "correct_answer": 1,
+      "explanation": "A media set in Foundry is a collection of media files (images, videos, audio) organized with a common schema. Media sets enable efficient storage, retrieval, and analysis of media data, and can be used in pipelines and applications to work with unstructured media content at scale.",
+      "url": "https://www.palantir.com/docs/foundry/pipeline-builder/outputs-overview"
+    },
+    {
+      "id": 45,
+      "category": "Workflow Management",
+      "difficulty": "intermediate",
+      "question": "What is Workflow Lineage used for?",
+      "options": [
+        "Drawing organizational charts",
+        "Understanding and managing applications and their underlying processes",
+        "Tracking employee workflows",
+        "Managing project timelines"
+      ],
+      "correct_answer": 1,
+      "explanation": "Workflow Lineage provides visibility into applications and their underlying processes, showing how data flows through pipelines, transformations, and into applications. This helps users understand dependencies, troubleshoot issues, and manage the complexity of interconnected workflows in the platform.",
+      "url": "https://www.palantir.com/docs/foundry/app-building/overview"
+    },
+    {
+      "id": 46,
+      "category": "Platform Administration",
+      "difficulty": "beginner",
+      "question": "What is Control Panel used for in Foundry?",
+      "options": [
+        "Controlling data pipelines",
+        "Managing the Palantir platform and its settings",
+        "Creating dashboards",
+        "Writing code"
+      ],
+      "correct_answer": 1,
+      "explanation": "Control Panel is the central administrative interface for managing the Palantir platform. Platform administrators use it to configure platform settings, manage users and groups, control authentication, set up integrations, and oversee overall platform operations and governance.",
+      "url": "https://www.palantir.com/docs/foundry/platform-overview/overview"
+    },
+    {
+      "id": 47,
+      "category": "Platform Versions",
+      "difficulty": "intermediate",
+      "question": "What are the three platform versions available through the platform version switcher?",
+      "options": [
+        "Development, Testing, Production",
+        "Stable, Beta, Prior",
+        "Basic, Advanced, Enterprise",
+        "Version 1, Version 2, Version 3"
+      ],
+      "correct_answer": 1,
+      "explanation": "The platform version switcher allows users to choose between Stable (production-ready features), Beta (new features in testing), and Prior (previous stable version for backward compatibility). This gives organizations control over when to adopt new features while maintaining stability.",
+      "url": "https://www.palantir.com/docs/foundry/administration/configure-platform-experience"
+    },
+    {
+      "id": 48,
+      "category": "Carbon",
+      "difficulty": "intermediate",
+      "question": "What does Carbon enable in Foundry?",
+      "options": [
+        "Carbon emission tracking",
+        "Configuration of tailored platform experiences (workspaces) for specific user groups",
+        "Dark mode themes",
+        "Data archiving"
+      ],
+      "correct_answer": 1,
+      "explanation": "Carbon enables platform administrators to configure tailored platform experiences, or workspaces, for specific user groups. This allows organizations to customize the platform interface, available features, and navigation for different teams or roles, improving usability and focusing users on relevant capabilities.",
+      "url": "https://www.palantir.com/docs/foundry/app-building/overview"
+    },
+    {
+      "id": 49,
+      "category": "Interfaces",
+      "difficulty": "advanced",
+      "question": "What is an interface in the Foundry Ontology?",
+      "options": [
+        "A user interface component",
+        "An Ontology type that describes the shape of an object type and provides polymorphism",
+        "A database connection",
+        "A network interface"
+      ],
+      "correct_answer": 1,
+      "explanation": "An interface in the Ontology is a type that describes the shape (properties and behaviors) that an object type must have, enabling polymorphism. Multiple object types can implement the same interface, allowing functions and applications to work with any object type that implements a given interface, promoting code reuse and flexibility.",
+      "url": "https://www.palantir.com/docs/foundry/ontology/overview"
+    },
+    {
+      "id": 50,
+      "category": "Best Practices",
+      "difficulty": "intermediate",
+      "question": "When creating a data pipeline, what type should you typically start with according to Foundry best practices?",
+      "options": [
+        "Streaming pipeline",
+        "Incremental pipeline",
+        "Batch pipeline",
+        "Hybrid pipeline"
+      ],
+      "correct_answer": 2,
+      "explanation": "Best practice recommends starting with a batch pipeline because they are simpler to write and maintain. Once the batch pipeline is working correctly, you can then optimize it by converting to an incremental pipeline if needed. This approach reduces initial complexity while ensuring correctness before pursuing performance optimizations.",
+      "url": "https://www.palantir.com/docs/foundry/building-pipelines/pipeline-types"
+    }
+  ]
+}

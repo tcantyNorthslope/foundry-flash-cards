@@ -1,10 +1,100 @@
 html, body {
     margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+#root {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
 }
 
 .radix-themes:where([data-is-root-theme='true']) {
+    width: 100%;
+    height: 100%;
     min-height: 0;
+    display: flex;
+    flex-direction: column;
     @supports(min-height: 100dvh) {
         min-height: 0;
+    }
+}
+
+/* Ensure FoundryWidget wrapper takes full size */
+[data-foundry-widget] {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Toast animations */
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOutRight {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+.toast-enter {
+    animation: slideInRight 0.3s ease-out;
+}
+
+.toast-exit {
+    animation: slideOutRight 0.3s ease-in;
+}
+
+/* Question card transition animations */
+.question-card-wrapper {
+    will-change: opacity, transform;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+.question-card-exit {
+    animation: questionCardExit 2s ease-in forwards;
+}
+
+.question-card-enter {
+    animation: questionCardEnter 1s ease-out forwards;
+}
+
+@keyframes questionCardExit {
+    from {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-15px) scale(0.97);
+    }
+}
+
+@keyframes questionCardEnter {
+    from {
+        opacity: 0;
+        transform: translateY(15px) scale(0.97);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
     }
 }
