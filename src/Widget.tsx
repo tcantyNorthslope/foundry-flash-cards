@@ -2,8 +2,9 @@ import {
   Box,
   Flex,
   Grid,
+  Text,
 } from "@radix-ui/themes";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { CategoryPerformanceList } from "./components/CategoryPerformanceList";
 import { FilterBar } from "./components/FilterBar";
 import { FlashCard } from "./components/FlashCard";
@@ -13,6 +14,9 @@ import { loadQuestions } from "./dataLoader";
 import { useWidgetContext } from "./context.js";
 import type { AnswerRecord, Question } from "./types";
 import { calculateCategoryPerformance } from "./utils/performance";
+import PROMPT from "./prompt";
+import { client } from "./client";
+import { generateFoundryQuestions } from "@custom-widget/sdk";
 
 export const Widget: React.FC = () => {
   const { parameters } = useWidgetContext();
@@ -28,21 +32,37 @@ export const Widget: React.FC = () => {
   const [toastExiting, setToastExiting] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedDifficulties, setSelectedDifficulties] = useState<string[]>([]);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [generationError, setGenerationError] = useState<string | null>(null);
+  const nextQuestionIdRef = useRef<number>(1);
+  const generationAbortRef = useRef<AbortController | null>(null);
+  const isGeneratingRef = useRef<boolean>(false);
 
-  // Load questions on mount
+  // Load questions on mount (only if not in live mode)
   useEffect(() => {
-    loadQuestions()
-      .then((loadedQuestions) => {
-        // Shuffle questions for variety
-        const shuffled = [...loadedQuestions].sort(() => Math.random() - 0.5);
-        setQuestions(shuffled);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        console.error("Failed to load questions:", error);
-        setIsLoading(false);
-      });
-  }, []);
+    if (!liveMode) {
+      loadQuestions()
+        .then((loadedQuestions) => {
+          // Shuffle questions for variety
+          const shuffled = [...loadedQuestions].sort(() => Math.random() - 0.5);
+          setQuestions(shuffled);
+          setIsLoading(false);
+          // Set next question ID based on loaded questions
+          if (loadedQuestions.length > 0) {
+            nextQuestionIdRef.current = Math.max(...loadedQuestions.map((q) => q.id)) + 1;
+          }
+        })
+        .catch((error) => {
+          console.error("Failed to load questions:", error);
+          setIsLoading(false);
+        });
+    } else {
+      // In live mode, start with empty questions
+      setQuestions([]);
+      setIsLoading(false);
+      nextQuestionIdRef.current = 1;
+    }
+  }, [liveMode]);
 
   // Filter questions based on selected filters
   const filteredQuestions = useMemo(() => {
@@ -70,6 +90,167 @@ export const Widget: React.FC = () => {
   useEffect(() => {
     setCurrentQuestionIndex(0);
   }, [selectedCategories, selectedDifficulties]);
+
+  // Generate questions in live mode
+  useEffect(() => {
+    if (!liveMode) {
+      // Cancel any ongoing generation when live mode is turned off
+      if (generationAbortRef.current) {
+        generationAbortRef.current.abort();
+        generationAbortRef.current = null;
+      }
+      isGeneratingRef.current = false;
+      setIsGenerating(false);
+      setGenerationError(null);
+      return;
+    }
+
+    // Function to generate a batch of 10 questions
+    const generateBatch = async () => {
+      // Cancel previous generation if still running
+      if (generationAbortRef.current) {
+        generationAbortRef.current.abort();
+      }
+
+      const abortController = new AbortController();
+      generationAbortRef.current = abortController;
+      isGeneratingRef.current = true;
+      setIsGenerating(true);
+      setGenerationError(null);
+
+      try {
+        // Build prompt with category and difficulty filters if selected
+        let promptText = PROMPT;
+        if (selectedCategories.length > 0 || selectedDifficulties.length > 0) {
+          const categoryText =
+            selectedCategories.length > 0
+              ? `focused on these categories: ${selectedCategories.join(", ")}`
+              : "";
+          const difficultyText =
+            selectedDifficulties.length > 0
+              ? `with difficulty levels: ${selectedDifficulties.join(", ")}`
+              : "";
+          const filterText = [categoryText, difficultyText].filter(Boolean).join(" and ");
+          if (filterText) {
+            promptText = PROMPT.replace(
+              "Generate exactly 10 multiple-choice questions from Palantir Foundry documentation.",
+              `Generate exactly 10 multiple-choice questions from Palantir Foundry documentation ${filterText}.`
+            );
+          }
+        }
+
+        const response = await client(generateFoundryQuestions).executeFunction({
+          prompt: promptText,
+        });
+
+        // Check if generation was aborted
+        if (abortController.signal.aborted) {
+          return;
+        }
+
+        // Process the response - it's already a structured object
+        let generatedQuestions: Question[] = [];
+        try {
+          if (response.questions && Array.isArray(response.questions)) {
+            generatedQuestions = response.questions.map((q: {
+              id: number;
+              question: string;
+              options: string[];
+              correct_answer: string;
+              explanation: string;
+              category?: string;
+            }) => {
+              // Convert correct_answer from letter to index
+              // correct_answer is a string (letter format: "A", "B", "C", or "D")
+              const letter = q.correct_answer.toUpperCase().trim();
+              const correctAnswerIndex = letter.charCodeAt(0) - 65; // A=0, B=1, C=2, D=3
+
+              // Ensure options array is properly formatted
+              let options = q.options;
+              if (!Array.isArray(options)) {
+                options = [];
+              }
+
+              // Map options to remove letter prefixes if present
+              options = options.map((opt: string) => {
+                // Remove "A) ", "B) ", etc. if present
+                return opt.replace(/^[A-D]\)\s*/, "");
+              });
+
+              return {
+                id: nextQuestionIdRef.current++,
+                category: q.category || "General",
+                difficulty: "intermediate" as const, // Default difficulty since not in response
+                question: q.question || "",
+                options: options,
+                correct_answer: correctAnswerIndex,
+                explanation: q.explanation || "",
+                url: "", // URL not in response, using empty string
+              };
+            });
+          }
+        } catch (parseError) {
+          console.error("Failed to process generated questions:", parseError);
+          throw new Error("Failed to process generated questions. Please try again.");
+        }
+
+        // Check if generation was aborted before updating state
+        if (abortController.signal.aborted) {
+          return;
+        }
+
+        // Add generated questions to the questions array
+        setQuestions((prev) => {
+          // Shuffle and add new questions
+          const shuffled = [...generatedQuestions].sort(() => Math.random() - 0.5);
+          return [...prev, ...shuffled];
+        });
+
+        isGeneratingRef.current = false;
+        setIsGenerating(false);
+      } catch (error: any) {
+        // Check if error is due to abort
+        if (abortController.signal.aborted) {
+          return;
+        }
+
+        console.error("Failed to generate questions:", error);
+        setGenerationError(
+          error?.message || "Failed to generate questions. Please try again."
+        );
+        isGeneratingRef.current = false;
+        setIsGenerating(false);
+      } finally {
+        if (generationAbortRef.current === abortController) {
+          generationAbortRef.current = null;
+        }
+      }
+    };
+
+    // Generate initial batch when live mode is enabled
+    generateBatch();
+
+    // Set up interval to generate new batches when questions run low
+    const intervalId = setInterval(() => {
+      // Generate new batch if we have fewer than 20 questions remaining and not currently generating
+      if (!isGeneratingRef.current) {
+        setQuestions((prev) => {
+          if (prev.length < 20) {
+            generateBatch();
+          }
+          return prev;
+        });
+      }
+    }, 10000); // Check every 10 seconds
+
+    return () => {
+      clearInterval(intervalId);
+      if (generationAbortRef.current) {
+        generationAbortRef.current.abort();
+        generationAbortRef.current = null;
+      }
+    };
+  }, [liveMode, selectedCategories, selectedDifficulties]);
 
   // Handle answer submission
   const handleAnswer = useCallback(
@@ -147,7 +328,28 @@ export const Widget: React.FC = () => {
     );
   }
 
-  if (questions.length === 0) {
+  // In live mode, show loading state while generating initial questions
+  if (liveMode && questions.length === 0 && isGenerating) {
+    return (
+      <Box
+        p="4"
+        style={{
+          width: "100%",
+          height: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Flex align="center" justify="center">
+          Generating questions...
+        </Flex>
+      </Box>
+    );
+  }
+
+  // Only show "No questions available" if not in live mode or if generation failed
+  if (questions.length === 0 && !liveMode) {
     return (
       <Box
         p="4"
@@ -208,6 +410,36 @@ export const Widget: React.FC = () => {
         liveMode={liveMode}
         onLiveModeChange={setLiveMode}
       />
+      {isGenerating && liveMode && (
+        <Box
+          style={{
+            width: "100%",
+            padding: "8px 16px",
+            backgroundColor: "#f0f9ff",
+            borderBottom: "1px solid #bae6fd",
+            textAlign: "center",
+          }}
+        >
+          <Text size="2" style={{ color: "#0369a1" }}>
+            Generating new questions...
+          </Text>
+        </Box>
+      )}
+      {generationError && liveMode && (
+        <Box
+          style={{
+            width: "100%",
+            padding: "8px 16px",
+            backgroundColor: "#fef2f2",
+            borderBottom: "1px solid #fecaca",
+            textAlign: "center",
+          }}
+        >
+          <Text size="2" style={{ color: "#dc2626" }}>
+            {generationError}
+          </Text>
+        </Box>
+      )}
       <FilterBar
         questions={questions}
         selectedCategories={selectedCategories}
