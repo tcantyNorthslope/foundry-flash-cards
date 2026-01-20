@@ -7,6 +7,7 @@ export interface Question {
   correct_answer: number;
   explanation?: string;
   url: string;
+  isLiveMode?: boolean; // Indicates if question was generated in live mode
 }
 
 export interface QuestionsData {

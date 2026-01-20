@@ -2,6 +2,7 @@ import {
   Box,
   Flex,
   Grid,
+  Spinner,
   Text,
 } from "@radix-ui/themes";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -37,6 +38,7 @@ export const Widget: React.FC = () => {
   const nextQuestionIdRef = useRef<number>(1);
   const generationAbortRef = useRef<AbortController | null>(null);
   const isGeneratingRef = useRef<boolean>(false);
+  const shouldSwitchToLiveQuestionRef = useRef<boolean>(false);
 
   // Load questions on mount (only if not in live mode)
   useEffect(() => {
@@ -57,10 +59,8 @@ export const Widget: React.FC = () => {
           setIsLoading(false);
         });
     } else {
-      // In live mode, start with empty questions
-      setQuestions([]);
+      // In live mode, keep existing questions visible, just set loading to false
       setIsLoading(false);
-      nextQuestionIdRef.current = 1;
     }
   }, [liveMode]);
 
@@ -91,6 +91,17 @@ export const Widget: React.FC = () => {
     setCurrentQuestionIndex(0);
   }, [selectedCategories, selectedDifficulties]);
 
+  // Switch to first live question when they're generated after toggling to live mode
+  useEffect(() => {
+    if (shouldSwitchToLiveQuestionRef.current && filteredQuestions.length > 0) {
+      const firstLiveIndex = filteredQuestions.findIndex(q => q.isLiveMode);
+      if (firstLiveIndex >= 0) {
+        setCurrentQuestionIndex(firstLiveIndex);
+        shouldSwitchToLiveQuestionRef.current = false;
+      }
+    }
+  }, [filteredQuestions]);
+
   // Generate questions in live mode
   useEffect(() => {
     if (!liveMode) {
@@ -104,6 +115,9 @@ export const Widget: React.FC = () => {
       setGenerationError(null);
       return;
     }
+
+    // When toggling to live mode, if we already have questions, don't generate immediately
+    // Only generate if we have no questions or need more
 
     // Function to generate a batch of 10 questions
     const generateBatch = async () => {
@@ -186,6 +200,7 @@ export const Widget: React.FC = () => {
                 correct_answer: correctAnswerIndex,
                 explanation: q.explanation || "",
                 url: "", // URL not in response, using empty string
+                isLiveMode: true, // Mark as live mode question
               };
             });
           }
@@ -203,7 +218,18 @@ export const Widget: React.FC = () => {
         setQuestions((prev) => {
           // Shuffle and add new questions
           const shuffled = [...generatedQuestions].sort(() => Math.random() - 0.5);
-          return [...prev, ...shuffled];
+          const newQuestions = [...prev, ...shuffled];
+          
+          // If we just toggled to live mode and these are the first live questions
+          // (previous questions don't have isLiveMode), mark that we should switch to a live question
+          if (prev.length > 0 && prev.every(q => !q.isLiveMode) && shuffled.length > 0) {
+            shouldSwitchToLiveQuestionRef.current = true;
+          } else if (prev.length === 0) {
+            // If this is the first batch (no previous questions), reset to show first question
+            setCurrentQuestionIndex(0);
+          }
+          
+          return newQuestions;
         });
 
         isGeneratingRef.current = false;
@@ -228,7 +254,26 @@ export const Widget: React.FC = () => {
     };
 
     // Generate initial batch when live mode is enabled
-    generateBatch();
+    // Always generate a new batch when toggling to live mode to show live-generated questions
+    // Also generate when filters change and we have no matching questions
+    if (questions.length === 0) {
+      nextQuestionIdRef.current = 1;
+      generateBatch();
+    } else {
+      // Check if we need to generate based on filtered questions
+      const hasMatchingQuestions = questions.some((q) => {
+        const categoryMatch =
+          selectedCategories.length === 0 || selectedCategories.includes(q.category);
+        const difficultyMatch =
+          selectedDifficulties.length === 0 || selectedDifficulties.includes(q.difficulty);
+        return categoryMatch && difficultyMatch;
+      });
+
+      // Generate if we have questions but none match the current filters, or if we just toggled to live mode
+      if (!isGeneratingRef.current && (!hasMatchingQuestions || !questions.some(q => q.isLiveMode))) {
+        generateBatch();
+      }
+    }
 
     // Set up interval to generate new batches when questions run low
     const intervalId = setInterval(() => {
@@ -309,7 +354,8 @@ export const Widget: React.FC = () => {
     }, 300); // Match animation duration
   }, []);
 
-  if (isLoading) {
+  // Only show full-screen loading for initial load when NOT in live mode
+  if (isLoading && !liveMode) {
     return (
       <Box
         p="4"
@@ -328,28 +374,8 @@ export const Widget: React.FC = () => {
     );
   }
 
-  // In live mode, show loading state while generating initial questions
-  if (liveMode && questions.length === 0 && isGenerating) {
-    return (
-      <Box
-        p="4"
-        style={{
-          width: "100%",
-          height: "100%",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <Flex align="center" justify="center">
-          Generating questions...
-        </Flex>
-      </Box>
-    );
-  }
-
-  // Only show "No questions available" if not in live mode or if generation failed
-  if (questions.length === 0 && !liveMode) {
+  // Only show "No questions available" if not in live mode and no questions loaded
+  if (questions.length === 0 && !liveMode && !isLoading) {
     return (
       <Box
         p="4"
@@ -410,21 +436,6 @@ export const Widget: React.FC = () => {
         liveMode={liveMode}
         onLiveModeChange={setLiveMode}
       />
-      {isGenerating && liveMode && (
-        <Box
-          style={{
-            width: "100%",
-            padding: "8px 16px",
-            backgroundColor: "#f0f9ff",
-            borderBottom: "1px solid #bae6fd",
-            textAlign: "center",
-          }}
-        >
-          <Text size="2" style={{ color: "#0369a1" }}>
-            Generating new questions...
-          </Text>
-        </Box>
-      )}
       {generationError && liveMode && (
         <Box
           style={{
@@ -488,7 +499,31 @@ export const Widget: React.FC = () => {
             gridColumn: "2",
           }}
         >
-          {hasFilteredQuestions && currentQuestion ? (
+          {/* Show loading state when generating live questions and we don't have any live questions yet */}
+          {liveMode && isGenerating && !questions.some(q => q.isLiveMode) ? (
+            <Box
+              style={{
+                width: "100%",
+                height: "100%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                padding: "24px",
+              }}
+            >
+              <Flex align="center" justify="center" direction="column" gap="4">
+                <Spinner size="3" />
+                <Flex direction="column" align="center" gap="2">
+                  <Text size="4" style={{ color: "#666", textAlign: "center" }}>
+                    Generating questions...
+                  </Text>
+                  <Text size="2" style={{ color: "#999", textAlign: "center" }}>
+                    Please wait while we generate your first batch of questions.
+                  </Text>
+                </Flex>
+              </Flex>
+            </Box>
+          ) : hasFilteredQuestions && currentQuestion ? (
             <Box
               style={{
                 width: "100%",
@@ -517,9 +552,27 @@ export const Widget: React.FC = () => {
                 padding: "24px",
               }}
             >
-              <Text size="3" style={{ color: "#666", textAlign: "center" }}>
-                No questions match the selected filters. Please adjust your filters.
-              </Text>
+              {liveMode ? (
+                <Flex align="center" justify="center" direction="column" gap="4">
+                  {isGenerating && (
+                    <Spinner size="3" />
+                  )}
+                  <Flex direction="column" align="center" gap="2">
+                    <Text size="4" style={{ color: "#666", textAlign: "center" }}>
+                      No questions match the selected filters
+                    </Text>
+                    <Text size="2" style={{ color: "#999", textAlign: "center" }}>
+                      {isGenerating
+                        ? "Generating new questions..."
+                        : "Waiting for questions to be generated..."}
+                    </Text>
+                  </Flex>
+                </Flex>
+              ) : (
+                <Text size="3" style={{ color: "#666", textAlign: "center" }}>
+                  No questions match the selected filters. Please adjust your filters.
+                </Text>
+              )}
             </Box>
           )}
         </Box>
