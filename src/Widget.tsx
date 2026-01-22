@@ -27,6 +27,7 @@ export const Widget: React.FC = () => {
   const [toast, setToast] = useState<{
     message: string;
     explanation?: string;
+    url?: string;
   } | null>(null);
   const [toastExiting, setToastExiting] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
@@ -171,6 +172,7 @@ export const Widget: React.FC = () => {
               correct_answer: string;
               explanation: string;
               category?: string;
+              url?: string;
             }) => {
               // Convert correct_answer from letter to index
               // correct_answer is a string (letter format: "A", "B", "C", or "D")
@@ -197,7 +199,7 @@ export const Widget: React.FC = () => {
                 options: options,
                 correct_answer: correctAnswerIndex,
                 explanation: q.explanation || "",
-                url: "", // URL not in response, using empty string
+                url: q.url || "", // Extract URL from response if available
                 isLiveMode: true, // Mark as live mode question
               };
             });
@@ -327,6 +329,7 @@ export const Widget: React.FC = () => {
         setToast({
           message: "✓ Correct!",
           explanation: question.explanation,
+          url: question.url,
         });
         // Auto-advance to next question immediately
         if (filteredQuestions.length > 0) {
@@ -425,6 +428,7 @@ export const Widget: React.FC = () => {
           <Toast
             message={toast.message}
             explanation={toast.explanation}
+            url={toast.url}
             onClose={handleToastClose}
           />
         </Box>

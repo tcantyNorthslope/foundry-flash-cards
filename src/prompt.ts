@@ -5,6 +5,7 @@ const PROMPT = `You are an expert in Palantir Foundry. Generate exactly 10 multi
     2. Four options (A, B, C, D)
     3. The correct answer (letter only)
     4. A brief explanation of why the answer is correct
+    5. A URL to relevant Palantir Foundry documentation (if available)
 
     Format your response as a JSON object with this exact structure:
     {
@@ -15,7 +16,8 @@ const PROMPT = `You are an expert in Palantir Foundry. Generate exactly 10 multi
         "options": ["A) Option 1", "B) Option 2", "C) Option 3", "D) Option 4"],
         "correct_answer": "A",
         "explanation": "Explanation text here",
-        "category": "Category name"
+        "category": "Category name",
+        "url": "https://www.palantir.com/docs/foundry/..."
         }
     ]
     }

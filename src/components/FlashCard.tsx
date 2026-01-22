@@ -7,6 +7,7 @@ import {
   Heading,
   Text,
 } from "@radix-ui/themes";
+import { CopyIcon, CheckIcon } from "@radix-ui/react-icons";
 import React, { useEffect, useMemo, useState } from "react";
 import type { Question } from "../types";
 
@@ -51,6 +52,7 @@ export const FlashCard: React.FC<FlashCardProps> = ({
 }) => {
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [hasAnswered, setHasAnswered] = useState(false);
+  const [urlCopied, setUrlCopied] = useState(false);
 
   // Reset state when question changes
   useEffect(() => {
@@ -271,6 +273,43 @@ export const FlashCard: React.FC<FlashCardProps> = ({
                   {question.explanation}
                 </Text>
               )}
+              <Flex
+                align="center"
+                gap="2"
+                style={{
+                  marginTop: "12px",
+                  cursor: question.url ? "pointer" : "not-allowed",
+                  display: "inline-flex",
+                  opacity: question.url ? 1 : 0.5,
+                }}
+                onClick={async (e) => {
+                  e.stopPropagation();
+                  if (!question.url) return;
+                  try {
+                    await navigator.clipboard.writeText(question.url);
+                    setUrlCopied(true);
+                    setTimeout(() => setUrlCopied(false), 2000);
+                  } catch (err) {
+                    console.error("Failed to copy URL:", err);
+                  }
+                }}
+              >
+                {urlCopied ? (
+                  <>
+                    <Text size="2" style={{ color: "#721c24" }}>
+                      Copied!
+                    </Text>
+                    <CheckIcon width="14" height="14" />
+                  </>
+                ) : (
+                  <>
+                    <Text size="2" style={{ color: "#721c24", textDecoration: question.url ? "underline" : "none" }}>
+                      Documentation
+                    </Text>
+                    <CopyIcon width="14" height="14" />
+                  </>
+                )}
+              </Flex>
             </Box>
             <Button
               size="3"
