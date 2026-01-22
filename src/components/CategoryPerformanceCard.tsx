@@ -1,4 +1,4 @@
-import { Box, Card, Flex, Progress, Text } from "@radix-ui/themes";
+import { Card, Flex, Progress, Text } from "@radix-ui/themes";
 import React from "react";
 import type { CategoryPerformance } from "../types";
 

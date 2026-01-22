@@ -12,7 +12,6 @@ import { FlashCard } from "./components/FlashCard";
 import { Header } from "./components/Header";
 import { Toast } from "./components/Toast";
 import { loadQuestions } from "./dataLoader";
-import { useWidgetContext } from "./context.js";
 import type { AnswerRecord, Question } from "./types";
 import { calculateCategoryPerformance } from "./utils/performance";
 import PROMPT from "./prompt";
@@ -20,7 +19,6 @@ import { client } from "./client";
 import { generateFoundryQuestions } from "@custom-widget/sdk";
 
 export const Widget: React.FC = () => {
-  const { parameters } = useWidgetContext();
   const [questions, setQuestions] = useState<Question[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<AnswerRecord[]>([]);

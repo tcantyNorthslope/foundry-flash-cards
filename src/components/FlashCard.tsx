@@ -48,7 +48,6 @@ export const FlashCard: React.FC<FlashCardProps> = ({
   question,
   onAnswer,
   onNext,
-  showAnswer,
 }) => {
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [hasAnswered, setHasAnswered] = useState(false);

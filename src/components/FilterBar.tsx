@@ -1,4 +1,4 @@
-import { Badge, Box, Flex, Select, Text } from "@radix-ui/themes";
+import { Badge, Box, Flex } from "@radix-ui/themes";
 import React from "react";
 import type { Question } from "../types";
 
