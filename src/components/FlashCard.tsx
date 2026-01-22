@@ -145,6 +145,24 @@ export const FlashCard: React.FC<FlashCardProps> = ({
           <Badge variant="soft" size="1">
             {question.difficulty.charAt(0).toUpperCase() + question.difficulty.slice(1)}
           </Badge>
+          {question.isLiveMode && (
+            <Box
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                padding: "2px 8px",
+                borderRadius: "9999px",
+                fontSize: "11px",
+                fontWeight: "500",
+                lineHeight: "16px",
+                background: "linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)",
+                color: "white",
+                border: "none",
+              }}
+            >
+              Live Mode
+            </Box>
+          )}
         </Flex>
 
         <Heading size="5" style={{ marginTop: "8px" }}>
